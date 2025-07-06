@@ -1,0 +1,1 @@
+{"root":["./src/app.vue.d.ts","./src/main.ts","./src/vite-env.d.ts","./src/components/navbar.vue.d.ts","./src/composables/usecart.ts","./src/pages/cart.vue.d.ts","./src/pages/home.vue.d.ts","./src/pages/menu.vue.d.ts","./src/pages/orderstatus.vue.d.ts","./src/router/index.ts"],"version":"5.8.3"}

@@ -1,0 +1,6 @@
+workloads: {}
+resources: {}
+shared_state: {}
+compose_project: frontend
+mounts_directory: .score-compose/mounts
+patching_templates: []

@@ -1,0 +1,19 @@
+apiVersion: score.dev/v1b1
+metadata:
+  name: pizza-app
+  description: A pizza app
+containers:
+  frontend:
+    image: pizza-ui
+
+service:
+  ports:
+    web:
+      port: 80
+      targetPort: 8080
+
+resources:
+  redis:
+    type: redis
+  rabbitmq:
+    type: amqp

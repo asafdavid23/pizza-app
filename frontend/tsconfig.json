@@ -1,0 +1,26 @@
+{
+  "include": ["src"],
+  "exclude": ["node_modules", "**/*.vue"],
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "types": ["vite/client"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "jsx": "preserve",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@composables": ["./src/composables"],
+      "@views/*": ["./src/views/*"],
+      "@store/*": ["./src/store/*"],
+      "@router/*": ["./src/router/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@utils/*": ["./src/utils/*"]
+    },
+    "noEmit": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "strict": true
+  }
+}

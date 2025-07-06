@@ -1,0 +1,63 @@
+workloads:
+  pizza-app:
+    spec:
+      apiVersion: score.dev/v1b1
+      containers:
+        frontend:
+          image: pizza-ui
+      metadata:
+        description: A pizza app
+        name: pizza-app
+      resources:
+        rabbitmq:
+          type: amqp
+        redis:
+          type: redis
+      service:
+        ports:
+          web:
+            port: 80
+            targetPort: 8080
+    file: score.yaml
+    instance_suffix: -78ddf133af
+resources:
+  amqp.default#pizza-app.rabbitmq:
+    guid: 043faea5-9d1f-4e86-67a6-948a3bfc0722
+    type: amqp
+    class: default
+    id: pizza-app.rabbitmq
+    metadata: {}
+    params: {}
+    source_workload: pizza-app
+    provisioner: template://default-provisioners/rabbitmq
+    state:
+      password: yFJ0RxHvOhqNSwcl
+      service: rabbitmq-pizza-app-043faea5
+      username: user-qlCKYZyX
+      vhost: vhost-OlZrmQdJ
+    outputs:
+      host: rabbitmq-pizza-app-043faea5
+      password: yFJ0RxHvOhqNSwcl
+      port: 5672
+      username: user-qlCKYZyX
+      vhost: vhost-OlZrmQdJ
+  redis.default#pizza-app.redis:
+    guid: 9f1262d1-dd2c-4fd6-0a44-1da57bf4e9f2
+    type: redis
+    class: default
+    id: pizza-app.redis
+    metadata: {}
+    params: {}
+    source_workload: pizza-app
+    provisioner: template://default-provisioners/redis
+    state:
+      password: C0xhwlh6jDHeOiGd
+      service: redis-pizza-app-9f1262d1
+      username: default
+    outputs:
+      host: redis-pizza-app-9f1262d1
+      password: "\U0001F510\U0001F4ACredis-pizza-app-9f1262d1_password\U0001F4AC\U0001F510"
+      port: 6379
+      username: default
+shared_state: {}
+patching_templates: []

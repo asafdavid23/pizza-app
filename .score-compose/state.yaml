@@ -1,0 +1,66 @@
+workloads:
+  pizza-app:
+    spec:
+      apiVersion: score.dev/v1b1
+      containers:
+        frontend:
+          image: pizza-ui
+      metadata:
+        description: A pizza app
+        name: pizza-app
+      resources:
+        rabbitmq:
+          type: amqp
+        redis:
+          type: redis
+      service:
+        ports:
+          web:
+            port: 80
+            targetPort: 8080
+    file: score.yaml
+resources:
+  amqp.default#pizza-app.rabbitmq:
+    guid: f27a4876-9fa1-4857-400b-5540e67817e5
+    type: amqp
+    class: default
+    id: pizza-app.rabbitmq
+    metadata: {}
+    params: {}
+    source_workload: pizza-app
+    provisioner: template://default-provisioners/rabbitmq
+    state:
+      password: Sdd9htnvnjPBPdkg
+      username: user-LBvtnVBD
+      vhost: vhost-PmzXyVIg
+    outputs:
+      host: rabbitmq-u4tvUO
+      password: Sdd9htnvnjPBPdkg
+      port: 5672
+      username: user-LBvtnVBD
+      vhost: vhost-PmzXyVIg
+  redis.default#pizza-app.redis:
+    guid: ce3f1923-233c-4801-0230-64f8c11af4b5
+    type: redis
+    class: default
+    id: pizza-app.redis
+    metadata: {}
+    params: {}
+    source_workload: pizza-app
+    provisioner: template://default-provisioners/redis
+    state:
+      password: CmOVgGhKGasg6Pw3
+      serviceName: redis-EY64hc
+    outputs:
+      host: redis-EY64hc
+      password: CmOVgGhKGasg6Pw3
+      port: 6379
+      username: default
+shared_state:
+  default-provisioners-rabbitmq:
+    instanceErlangCookie: IzoMFqLHdmxOiCxCLayM
+    instanceServiceName: rabbitmq-u4tvUO
+    publishPorts: []
+compose_project: pizza-app
+mounts_directory: .score-compose/mounts
+patching_templates: []

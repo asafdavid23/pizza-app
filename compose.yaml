@@ -1,0 +1,93 @@
+name: pizza-app
+services:
+    pizza-app-frontend:
+        annotations:
+            compose.score.dev/workload-name: pizza-app
+        depends_on:
+            wait-for-resources:
+                condition: service_completed_successfully
+                required: true
+        hostname: pizza-app
+        image: pizza-ui
+    rabbitmq-u4tvUO:
+        environment:
+            RABBITMQ_DEFAULT_PASS: guest
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_ERLANG_COOKIE: IzoMFqLHdmxOiCxCLayM
+        healthcheck:
+            test:
+                - CMD-SHELL
+                - rabbitmq-diagnostics -q check_port_connectivity
+            timeout: 5s
+            interval: 2s
+            retries: 15
+        image: mirror.gcr.io/rabbitmq:3-management-alpine
+        restart: always
+        volumes:
+            - type: volume
+              source: rabbitmq-u4tvUO-data
+              target: /var/lib/rabbitmq
+    rabbitmq-u4tvUO-init:
+        command:
+            - -c
+            - |
+              set -exu
+              for s in /db-scripts/*.sh; do source $$s; done
+        depends_on:
+            rabbitmq-u4tvUO:
+                condition: service_healthy
+                restart: true
+                required: false
+        entrypoint:
+            - /bin/sh
+        environment:
+            RABBITMQ_ERLANG_COOKIE: IzoMFqLHdmxOiCxCLayM
+        image: mirror.gcr.io/rabbitmq:3-management-alpine
+        labels:
+            dev.score.compose.labels.is-init-container: "true"
+        network_mode: service:rabbitmq-u4tvUO
+        volumes:
+            - type: bind
+              source: .score-compose/mounts/rabbitmq-u4tvUO-db-scripts
+              target: /db-scripts
+    redis-EY64hc:
+        command:
+            - /usr/local/etc/redis/redis.conf
+        entrypoint:
+            - redis-server
+        image: mirror.gcr.io/redis:7-alpine
+        labels:
+            dev.score.compose.res.uid: redis.default#pizza-app.redis
+        restart: always
+        volumes:
+            - type: bind
+              source: .score-compose/mounts/redis-EY64hc/redis.conf
+              target: /usr/local/etc/redis/redis.conf
+              read_only: true
+            - type: volume
+              source: redis-EY64hc-data
+              target: /data
+              volume:
+                nocopy: true
+    wait-for-resources:
+        command:
+            - echo
+        depends_on:
+            rabbitmq-u4tvUO:
+                condition: service_healthy
+                required: true
+            rabbitmq-u4tvUO-init:
+                condition: service_completed_successfully
+                required: true
+            redis-EY64hc:
+                condition: service_started
+                required: true
+        image: alpine
+volumes:
+    rabbitmq-u4tvUO-data:
+        driver: local
+    redis-EY64hc-data:
+        name: redis-EY64hc-data
+        driver: local
+        labels:
+            dev.score.compose.res.uid: redis.default#pizza-app.redis
